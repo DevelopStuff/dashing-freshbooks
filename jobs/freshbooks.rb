@@ -48,6 +48,7 @@ SCHEDULER.every '10m', :first_in => 0 do |job|
   r = client.invoice.list(:per_page => PER_PAGE, :status => 'unpaid', :date_from => DateTime.now.utc.beginning_of_year.strftime(DATE_FORMAT), :date_to => DateTime.now.utc.end_of_year.strftime(DATE_FORMAT))
   pages = r["invoices"]["pages"].to_i
   invoices = r["invoices"]["invoice"].is_a?(Hash) ? [r["invoices"]["invoice"]] : r["invoices"]["invoice"]
+  invoices ||= []
   if (pages > 1)
     page = 2
     while(page <= pages)
