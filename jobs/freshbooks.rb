@@ -35,6 +35,7 @@ SCHEDULER.every '10m', :first_in => 0 do |job|
   r = client.payment.list(:per_page => PER_PAGE, :date_from => DateTime.now.utc.beginning_of_year.strftime(DATE_FORMAT), :date_to => DateTime.now.utc.end_of_year.strftime(DATE_FORMAT))
   pages = r["payments"]["pages"].to_i
   payments = r["payments"]["payment"].is_a?(Hash) ? [r["payments"]["payment"]] : r["payments"]["payment"]
+  payments ||= []
   if (pages > 1)
     page = 2
     while(page <= pages)
